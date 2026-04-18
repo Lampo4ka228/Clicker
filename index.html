@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8" />
+  <title>Кликер с сохранением и сбросом</title>
+</head>
+<body>
+  <form>
+    <button type="submit" id="clickBtn"></button>
+  </form>
+  <button id="saveBtn">Сохранить</button>
+  <button id="resetBtn">Обнулить</button>
+
+  <p id="text1"> Очки: <span id="score">0</span></p>
+  <p id="text2"> Сохранено: </p><span id="savedScore">0</span></p>
+  
+    <style type="text/css" media="all">
+    #clickBtn {
+    background: black;
+    position: absolute;
+    left: 300px;
+    top: 300px;
+    padding: 50px;
+    width: 300px;
+    height: 300px;
+    border-color: orange;
+    border-radius: 50px;
+    border-width: 15px;
+}
+
+#saveBtn {
+    position: absolute;
+    left: 300px;
+    top: 610px;
+    padding: 25px;
+    border-color: orange;
+    border-radius: 50px;
+    border-width: 15px;
+    background: black;
+    color: white;
+}
+
+#resetBtn {
+    position: absolute;
+    padding: 25px;
+    left: 465px;
+    top: 610px;
+    border-color: orange;
+    border-radius: 50px;
+    border-width: 15px;
+    background: black;
+    color: white;
+}
+
+#score {
+    position: absolute;
+    font-size: 50px;
+    color: white;
+}
+
+ #text1 {
+    position: absolute;
+    left: 40%;
+    top: 190px;
+    font-size: 50px;
+    color: white;
+ }
+ 
+ #savedScore {
+    position: absolute;
+    font-size: 25px;
+    left: 54%;
+    top: 220px;
+    color: white;
+ }
+ 
+ #text2 {
+    position: absolute;
+    left: 40%;
+    top: 195px;
+    font-size: 25px;
+    color: white;
+ }
+ 
+  body {
+     background-color: black;
+ }
+
+  </style>
+
+  <script>
+    const STORAGE_KEY = 'clickerScore';
+
+    function loadScore() {
+      const saved = localStorage.getItem(STORAGE_KEY);
+      return saved ? parseInt(saved, 10) : 0;
+    }
+
+    function saveScore(value) {
+      localStorage.setItem(STORAGE_KEY, value);
+    }
+
+    let score = loadScore();
+
+    const clickBtn = document.getElementById('clickBtn');
+    const saveBtn = document.getElementById('saveBtn');
+    const resetBtn = document.getElementById('resetBtn');
+    const scoreDisplay = document.getElementById('score');
+    const savedScoreDisplay = document.getElementById('savedScore');
+
+    function updateDisplay() {
+      scoreDisplay.textContent = score;
+      savedScoreDisplay.textContent = loadScore();
+    }
+
+    clickBtn.addEventListener('click', (event) => {
+      event.preventDefault(); // Отменяем отправку формы
+      score += 1;
+      updateDisplay();
+    });
+
+    saveBtn.addEventListener('click', () => {
+      saveScore(score);
+      updateDisplay();
+    });
+
+    resetBtn.addEventListener('click', () => {
+      score = 0;
+      saveScore(score); // Чтобы сбросить и в сохранении
+      updateDisplay();
+    });
+
+    updateDisplay();
+  </script>
+</body>
+</html>
